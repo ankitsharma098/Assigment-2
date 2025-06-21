@@ -1,16 +1,34 @@
-# assignment2
+# Interactive Box Layout UI - Flutter
 
-A new Flutter project.
+A dynamic Flutter application that creates an interactive C-shaped box layout with user input, animations, and state management using BLoC pattern.
 
-## Getting Started
+## 🎯 Features
 
-This project is a starting point for a Flutter application.
+- **Dynamic Input**: Enter a number between 5-25 to generate boxes
+- **C-Shape Layout**: Boxes are arranged in the shape of letter 'C'
+- **Interactive Boxes**: Tap boxes to toggle from red to green
+- **Reverse Animation**: Automatic reverse animation (green to red) in reverse click order
+- **Responsive Design**: Adapts to different screen sizes using MediaQuery
+- **BLoC State Management**: Clean architecture with separation of concerns
+- **Attractive UI**: Modern Material Design with cards, shadows, and animations
 
-A few resources to get you started if this is your first Flutter project:
+## 📱 Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Screenshot_20250621_205103](https://github.com/user-attachments/assets/2567f168-fc6e-4577-95b6-519cef56d41a)
+![Screenshot_20250621_205123](https://github.com/user-attachments/assets/1424f56e-b22e-481b-b378-420867bbdeb2)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Flutter SDK (>=3.0.0)
+- Dart SDK (>=2.17.0)
+- Android Studio / VS Code
+- Android Emulator or Physical Device
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone "repo link "

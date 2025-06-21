@@ -34,96 +34,98 @@ class _BoxLayoutScreenState extends State<BoxLayoutScreen> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(screenSize.width * 0.04),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: screenSize.height * 0.02),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(screenSize.width * 0.04),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: screenSize.height * 0.02),
 
-            // Header Section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Box Configuration',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: screenSize.width * 0.045,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                const Icon(Icons.apps, color: Colors.blue),
-              ],
-            ),
-
-            SizedBox(height: screenSize.height * 0.03),
-
-            // Input Section
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(screenSize.width * 0.03),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(screenSize.width * 0.04),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _controller,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Enter number of boxes (5-25)',
-                        labelStyle:
-                            TextStyle(fontSize: screenSize.width * 0.035),
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(screenSize.width * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Box Configuration',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: screenSize.width * 0.045,
+                          fontWeight: FontWeight.w700,
                         ),
-                        prefixIcon: const Icon(Icons.numbers),
-                      ),
-                    ),
-                    SizedBox(height: screenSize.height * 0.02),
-                    SizedBox(
-                      width: double.infinity,
-                      height: screenSize.height * 0.06,
-                      child: ElevatedButton(
-                        onPressed: _generateBoxes,
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
+                  ),
+                  const Icon(Icons.apps, color: Colors.blue),
+                ],
+              ),
+
+              SizedBox(height: screenSize.height * 0.03),
+
+              // Input Section
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(screenSize.width * 0.03),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(screenSize.width * 0.04),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _controller,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Enter number of boxes (5-25)',
+                          labelStyle:
+                              TextStyle(fontSize: screenSize.width * 0.035),
+                          border: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.circular(screenSize.width * 0.02),
                           ),
+                          prefixIcon: const Icon(Icons.numbers),
                         ),
-                        child: Text(
-                          'Generate Boxes',
-                          style: TextStyle(
-                            fontSize: screenSize.width * 0.04,
-                            fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: screenSize.height * 0.02),
+                      SizedBox(
+                        width: double.infinity,
+                        height: screenSize.height * 0.06,
+                        child: ElevatedButton(
+                          onPressed: _generateBoxes,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  screenSize.width * 0.02),
+                            ),
+                          ),
+                          child: Text(
+                            'Generate Boxes',
+                            style: TextStyle(
+                              fontSize: screenSize.width * 0.04,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(height: screenSize.height * 0.03),
+              SizedBox(height: screenSize.height * 0.03),
 
-            // Box Layout Section
-            Expanded(
-              child: BlocBuilder<BoxBloc, BoxState>(
-                builder: (context, state) {
-                  if (state is BoxInitial) {
-                    return _buildEmptyState(screenSize);
-                  } else if (state is BoxGenerated) {
-                    return _buildBoxLayout(state, screenSize);
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                },
+              // Box Layout Section
+              SizedBox(
+                height: screenSize.height * 0.7,
+                child: BlocBuilder<BoxBloc, BoxState>(
+                  builder: (context, state) {
+                    if (state is BoxInitial) {
+                      return _buildEmptyState(screenSize);
+                    } else if (state is BoxGenerated) {
+                      return _buildBoxLayout(state, screenSize);
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -199,40 +201,59 @@ class _BoxLayoutScreenState extends State<BoxLayoutScreen> {
               ],
             ),
             SizedBox(height: screenSize.height * 0.03),
+
+            // C-Shape Layout Display
             Expanded(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: grid.asMap().entries.map((rowEntry) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: screenSize.height * 0.005),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                            rowEntry.value.asMap().entries.map((colEntry) {
-                          if (!colEntry.value) {
-                            return SizedBox(
-                              width: boxSize,
-                              height: boxSize,
+                  children: [
+                    Text(
+                      'C-Shape Layout (${state.boxes.length} boxes)',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: screenSize.width * 0.03,
+                            color: Colors.grey[600],
+                          ),
+                    ),
+                    SizedBox(height: screenSize.height * 0.02),
+
+                    // Grid Layout
+                    ...grid.asMap().entries.map((rowEntry) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: screenSize.height * 0.008),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:
+                              rowEntry.value.asMap().entries.map((colEntry) {
+                            final boxIndex = colEntry.value;
+
+                            if (boxIndex == null) {
+                              // Empty space
+                              return SizedBox(
+                                width: boxSize +
+                                    (screenSize.width *
+                                        0.02), // Include padding
+                                height: boxSize,
+                              );
+                            }
+
+                            final box = state.boxes[boxIndex];
+
+                            return Padding(
+                              padding: EdgeInsets.all(screenSize.width * 0.01),
+                              child: _buildBox(
+                                  box, boxSize, state.isAnimating, boxIndex),
                             );
-                          }
-
-                          final boxIndex =
-                              _getBoxIndex(grid, rowEntry.key, colEntry.key);
-                          final box = state.boxes[boxIndex];
-
-                          return Padding(
-                            padding: EdgeInsets.all(screenSize.width * 0.01),
-                            child: _buildBox(box, boxSize, state.isAnimating),
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }).toList(),
+                          }).toList(),
+                        ),
+                      );
+                    }).toList(),
+                  ],
                 ),
               ),
             ),
+
             SizedBox(height: screenSize.height * 0.02),
             SizedBox(
               width: double.infinity,
@@ -265,7 +286,8 @@ class _BoxLayoutScreenState extends State<BoxLayoutScreen> {
     );
   }
 
-  Widget _buildBox(BoxModel box, double size, bool isAnimating) {
+  Widget _buildBox(
+      BoxModel box, double size, bool isAnimating, int displayIndex) {
     return GestureDetector(
       onTap: isAnimating
           ? null
@@ -279,6 +301,10 @@ class _BoxLayoutScreenState extends State<BoxLayoutScreen> {
         decoration: BoxDecoration(
           color: box.isGreen ? Colors.green : Colors.red,
           borderRadius: BorderRadius.circular(size * 0.1),
+          border: Border.all(
+            color: Colors.white,
+            width: 2,
+          ),
           boxShadow: [
             BoxShadow(
               color: (box.isGreen ? Colors.green : Colors.red).withOpacity(0.3),
@@ -287,18 +313,30 @@ class _BoxLayoutScreenState extends State<BoxLayoutScreen> {
             ),
           ],
         ),
-        child: box.clickOrder != null
-            ? Center(
-                child: Text(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (box.clickOrder != null)
+                Text(
                   '${box.clickOrder}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: size * 0.3,
+                    fontSize: size * 0.25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
-            : null,
+              Text(
+                '${displayIndex + 1}',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: size * 0.15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
